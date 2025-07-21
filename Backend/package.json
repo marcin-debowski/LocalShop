@@ -1,5 +1,20 @@
 {
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only server.ts"
+  },
+  "dependencies": {
+    "@types/mongoose": "^5.11.96",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "ts-node-dev": "^2.0.0"
   }
 }

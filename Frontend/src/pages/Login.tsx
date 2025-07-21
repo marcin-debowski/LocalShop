@@ -1,15 +1,39 @@
+import { useState } from 'react';
+import axios from "../lib/axios";
+import type { LoginResponse } from '../types/auth.types';
+
 function Login(){
+    const [form, setForm] = useState({ email: '', password: '' });
+    const [message, setMessage] = useState('');
+
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+       const { name, value } = e.target;
+       setForm({ ...form, [name]: value });
+   };
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+        const res = await axios.post<LoginResponse>('/auth/login', form);
+        setMessage(res.data.message);
+        localStorage.setItem("token", res.data.token);
+    } catch (err: any) {
+        console.error('Error logging in:', err);
+        setMessage(err.response?.data?.message ?? 'An unexpected error occurred');
+    }
+}
 return(
     <>
-        <form className="grid grid-flow-col grid-rows-6 gap-3 min-w-md bg-zinc-100 rounded-md justify-items-center pt-5 pb-5 mt-30 ">
+        <form onSubmit={handleSubmit} className="grid grid-flow-col grid-rows-7 gap-3 min-w-md bg-zinc-100 rounded-md justify-items-center pt-5 pb-5 mt-30 ">
             <h1 className="">Log in</h1>
-            
-            <label htmlFor="login"  className="w-3/4 text-left content-center">Login</label>
-            <input type="text" name="login" id="login" placeholder="Login" className="w-3/4 border-stone-400 border-2 rounded-sm focus:border-stone-900"/>
-            
+
+            <label htmlFor="email"  className="w-3/4 text-left content-center">Email</label>
+            <input onChange={handleChange} type="email" name="email" id="email" placeholder="Email" className="w-3/4 border-stone-400 border-2 rounded-sm focus:border-stone-900"/>
+
             <label htmlFor="password"  className="w-3/4 text-left content-center">Password</label>
-            <input type="password" name="password" id="password" placeholder="Password" className="w-3/4   border-stone-400 border-2 rounded-sm focus:border-stone-900"/>
-            
+            <input onChange={handleChange} type="password" name="password" id="password" placeholder="Password" className="w-3/4   border-stone-400 border-2 rounded-sm focus:border-stone-900"/>
+            <p className={message ? "text-red-500" : ""}>
+                {message && <>{message}</>}
+            </p>
             <button className="w-1/2 m-auto hover:ba">Log in</button>        
         </form>
     </>
