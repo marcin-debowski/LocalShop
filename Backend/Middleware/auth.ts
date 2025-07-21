@@ -19,7 +19,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     if (err || !decoded || typeof decoded === "string") {
       return res.status(403).json({ message: "Forbidden" });
     }
-    // decoded is JwtPayload
+    // rozkodowanie tokenu i przypisanie userId do req.user
     req.user = { userId: (decoded as JwtPayload).userId };
     next();
   });
