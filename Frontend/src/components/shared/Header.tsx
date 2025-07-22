@@ -1,6 +1,7 @@
 import Navbar from "../layout/Navbar"
 
 function Header(){
+    
     return(
         <header className="grid grid-cols-6 self-start fixed top-0 left-0 w-full z-50 bg-white shadow-md pb-2 ">
 

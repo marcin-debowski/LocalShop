@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import axios from "../lib/axios";
 import type { LoginResponse } from '../types/auth.types';
+import { useAuthStore } from '../zustand/authStore';
+import { useNavigate } from "react-router-dom";
+
+
 
 function Login(){
     const [form, setForm] = useState({ email: '', password: '' });
     const [message, setMessage] = useState('');
+
+    const fetchUser = useAuthStore((state) => state.fetchUser);
+    const navigate = useNavigate();
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
        const { name, value } = e.target;
@@ -14,8 +21,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
         const res = await axios.post<LoginResponse>('/auth/login', form);
-        setMessage(res.data.message);
-        localStorage.setItem("token", res.data.token);
+        await fetchUser();
+        navigate('/');
     } catch (err: any) {
         console.error('Error logging in:', err);
         setMessage(err.response?.data?.message ?? 'An unexpected error occurred');

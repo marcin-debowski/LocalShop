@@ -3,6 +3,13 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const maxAge = 3*24*60*60;
+
+const createToken = (userId: string)=>{
+    return jwt.sign({userId},process.env.JWT_SECRET as string,{
+        expiresIn:maxAge
+    })
+}
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -56,13 +63,15 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     // generowanie tokenu
-    const token = jwt.sign(
-      { userId: user._id, role: user.role },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
-    );
-
-    res.status(200).json({ message: "Login successful", token , user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.cookie("token", createToken(user._id.toString()), {
+      httpOnly: true,
+      maxAge: maxAge * 1000, // cookie expires after maxAge seconds
+      sameSite: "lax"
+    })
+    .status(200)
+    .json({ message: "Login successful",
+       user: { id: user._id, name: user.name, email: user.email, role: user.role } 
+      });
   } catch (err) {
     // console.error("Error logging in user:", err);
     res.status(500).json({ message: "Internal server error" });

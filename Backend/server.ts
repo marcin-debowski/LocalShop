@@ -4,10 +4,11 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db';
 import authRoutes from './routes/authRoutes';
 import cors from 'cors';    
-
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 
 app.use(cors({
     origin: process.env.CLIENT_URL,
@@ -28,3 +29,4 @@ connectDB()
     });
 
 app.use('/api/auth', authRoutes);
+
