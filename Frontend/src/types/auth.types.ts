@@ -1,5 +1,5 @@
 export interface RegisterResponse {
-    message: string;
+  message: string;
 }
 export interface User {
   id: string;

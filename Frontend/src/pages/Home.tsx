@@ -1,13 +1,8 @@
-import Footer from "../components/shared/Footer"
-import Header from "../components/shared/Header"
-
-function Home(){
-return(
+function Home() {
+  return (
     <>
-        
-        <h1>Home page</h1>
-        
+      <h1>Home page</h1>
     </>
-)
+  );
 }
-export default Home
+export default Home;
