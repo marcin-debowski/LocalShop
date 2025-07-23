@@ -11,6 +11,7 @@ interface UserResponse {
   _id: string;
   name: string;
   email: string;
+  role: string; 
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -25,6 +26,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         id: res.data._id,
         name: res.data.name,
         email: res.data.email,
+        role: res.data.role,
       };
       set({ user });
       console.log("Fetched user:", user);

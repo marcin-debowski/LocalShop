@@ -1,7 +1,7 @@
 import Footer from "../components/shared/Footer"
 import Header from "../components/shared/Header"
 
-function Home(){
+function NoPage(){
 return(
     <>
         
@@ -10,4 +10,4 @@ return(
     </>
 )
 }
-export default Home
+export default NoPage

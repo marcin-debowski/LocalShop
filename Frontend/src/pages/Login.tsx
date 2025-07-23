@@ -44,6 +44,7 @@ function Login() {
           id="email"
           placeholder="Email"
           className="w-3/4 border-stone-400 border-2 rounded-sm focus:border-stone-900"
+          value={form.email}
         />
 
         <label htmlFor="password" className="w-3/4 text-left content-center">
@@ -56,11 +57,14 @@ function Login() {
           id="password"
           placeholder="Password"
           className="w-3/4   border-stone-400 border-2 rounded-sm focus:border-stone-900"
+          value={form.password}
         />
         <p className={message ? "text-red-500" : ""}>
           {message && <>{message}</>}
         </p>
-        <button className="w-1/2 m-auto hover:ba">Log in</button>
+        <button className="w-1/2 bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors">
+          Log in
+        </button>
       </form>
     </>
   );

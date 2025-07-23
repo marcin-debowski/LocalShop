@@ -67,7 +67,7 @@ export const loginUser = async (req: Request, res: Response) => {
     res
       .cookie("token", createToken(user._id.toString()), {
         httpOnly: true,
-        maxAge: maxAge * 1000, // cookie expires after maxAge seconds
+        maxAge: maxAge * 1000, 
         sameSite: "lax",
       })
       .status(200)
@@ -81,7 +81,26 @@ export const loginUser = async (req: Request, res: Response) => {
         },
       });
   } catch (err) {
-    // console.error("Error logging in user:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+export const logoutUser = (req: Request, res: Response) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logout successful" });
+}
+export const getCurrentUser = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.user?.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role, 
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+}

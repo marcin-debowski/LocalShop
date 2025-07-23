@@ -20,6 +20,7 @@ function Register() {
       const res = await axios.post<RegisterResponse>("/auth/register", form);
       setMessage(res.data.message);
       setMessageType("success");
+      setForm({ name: "", email: "", password: "" });
     } catch (err: any) {
       setMessage(err.response?.data?.message ?? "An unexpected error occurred");
       setMessageType("error");
@@ -43,6 +44,7 @@ function Register() {
           id="email"
           placeholder="Email"
           className="w-3/4 border-stone-400 border-2 rounded-sm focus:border-stone-900"
+          value={form.email}
         />
 
         <label htmlFor="name" className="w-3/4 text-left content-center">
@@ -55,6 +57,7 @@ function Register() {
           id="name"
           placeholder="Name"
           className="w-3/4 border-stone-400 border-2 rounded-sm focus:border-stone-900"
+          value={form.name}
         />
 
         <label htmlFor="password" className="w-3/4 text-left content-center">
@@ -67,6 +70,7 @@ function Register() {
           id="password"
           placeholder="Password"
           className="w-3/4   border-stone-400 border-2 rounded-sm focus:border-stone-900"
+          value={form.password}
         />
 
         <label
@@ -81,6 +85,7 @@ function Register() {
           id="passwordAgain"
           placeholder="Confirm Password"
           className="w-3/4   border-stone-400 border-2 rounded-sm focus:border-stone-900"
+          
         />
         <p
           className={
@@ -94,7 +99,7 @@ function Register() {
           {message && <>{message}</>}
         </p>
 
-        <button className="w-1/2 m-auto hover:bg-stone-900 hover:text-white">
+        <button className="w-1/2 bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors">
           Sign up
         </button>
       </form>
