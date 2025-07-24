@@ -23,7 +23,7 @@ export const AddAddress = async (req: Request, res: Response) => {
             return res.status(200).json({ message: "Address updated successfully", address: updatedAddress });
         }
 
-        // Create new address
+        // Tworzenie nowego adresu
         const newAddress = new Address({
             user: req.user?.userId,
             country,
@@ -39,5 +39,5 @@ export const AddAddress = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
-//zmiana adresu
+
 //wczytanie ostatniego adresu
