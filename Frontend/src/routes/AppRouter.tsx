@@ -6,6 +6,7 @@ import Layout from "../components/layout/LayoutAll";
 import NoPage from "../pages/NoPage";
 import Shop from "../pages/Shop";
 import AddProduct from "../pages/AddProduct";
+import ShoppingCart from "../pages/ShoppingCart";
 
 function AppRouter() {
     return (
@@ -18,6 +19,7 @@ function AppRouter() {
                         <Route path="register" element={<Register />} />
                         <Route path="shop" element={<Shop />} />
                         <Route path="add-product" element={<AddProduct />} />
+                        <Route path="shopping-cart" element={<ShoppingCart />} />
                         <Route path="*" element={<NoPage />} />
                     </Route>
                 </Routes>

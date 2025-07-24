@@ -38,18 +38,33 @@ function Navbar() {
               className={({ isActive }) =>
                 isActive
                   ? "text-gray-600 font-bold "
-                : "hover:text-blue-600 transition-colors"
-            }
-            to="/add-product"
-          >
-            Add Product
-          </NavLink>
-        </li>
+                  : "hover:text-blue-600 transition-colors"
+              }
+              to="/add-product"
+            >
+              Add Product
+            </NavLink>
+          </li>
         )}
         {user ? (
           <>
+            <li className="col-start-7">
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-gray-600 font-bold "
+                    : "hover:text-blue-600 transition-colors"
+                }
+                to="/shopping-cart"
+              >
+                Shopping Cart
+              </NavLink>
+            </li>
             <li className="col-start-8">
-              Witaj, <span className="font-semibold">{user.name}, {user.role}</span>
+              Witaj,{" "}
+              <span className="font-semibold">
+                {user.name}, {user.role}
+              </span>
             </li>
             <li className="col-start-9">
               <span

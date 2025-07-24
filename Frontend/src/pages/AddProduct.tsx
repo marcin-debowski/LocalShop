@@ -9,7 +9,7 @@ function AddProduct() {
     name: "",
     imageUrl: "",
     description: "",
-    price: 0,
+    price: 0.0,
     category: "",
     stock: 0,
   });
@@ -103,8 +103,9 @@ function AddProduct() {
             onChange={handleChange}
             name="price"
             type="number"
+            step="0.01"
             className="w-full p-2 border rounded"
-            value={form.price}
+            value={form.price === 0  ? "" : Number(form.price).toFixed(2)}
           />
         </div>
         <div className="mb-4">

@@ -14,3 +14,15 @@ export interface Product {
     username: string;
   };
 }
+
+type ShoppingCartItem = {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+};
+
+export interface ShoppingCartCardProps {
+  item: ShoppingCartItem;
+}
