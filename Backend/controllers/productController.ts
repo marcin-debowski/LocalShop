@@ -3,9 +3,7 @@ import {Product} from "../models/Product";
 
 export const addProduct = async (req: Request, res: Response) => {
   try {
-    console.log("req.user:", req.user);
-
-    const { name, imageUrl, description, price, category,stock } = req.body;
+    const { name, imageUrl, description, price, category, stock } = req.body;
 
     // Validate input
     if (!name || !imageUrl || !description || !price || !category || !stock) {

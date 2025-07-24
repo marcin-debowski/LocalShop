@@ -46,9 +46,7 @@ function Navbar() {
             </NavLink>
           </li>
         )}
-        {user ? (
-          <>
-            <li className="col-start-7">
+        <li className="col-start-7">
               <NavLink
                 className={({ isActive }) =>
                   isActive
@@ -60,6 +58,9 @@ function Navbar() {
                 Shopping Cart
               </NavLink>
             </li>
+        {user ? (
+          <>
+            
             <li className="col-start-8">
               Witaj,{" "}
               <span className="font-semibold">

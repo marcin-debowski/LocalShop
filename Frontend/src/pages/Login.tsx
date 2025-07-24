@@ -4,7 +4,7 @@ import type { LoginResponse } from "../types/auth.types";
 import { useAuthStore } from "../zustand/authStore";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({ path }: { path: string }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
 
@@ -20,7 +20,7 @@ function Login() {
     try {
       const res = await axios.post<LoginResponse>("/auth/login", form);
       await fetchUser();
-      navigate("/");
+      navigate(path);
     } catch (err: any) {
       console.error("Error logging in:", err);
       setMessage(err.response?.data?.message ?? "An unexpected error occurred");
@@ -30,7 +30,7 @@ function Login() {
     <>
       <form
         onSubmit={handleSubmit}
-        className="grid grid-flow-col grid-rows-7 gap-3 min-w-md bg-zinc-100 rounded-md justify-items-center pt-5 pb-5 mt-30 "
+        className="h-full grid grid-flow-col grid-rows-7 gap-3 min-w-md bg-zinc-100 rounded-md justify-items-center pt-5 pb-5"
       >
         <h1 className="">Log in</h1>
 

@@ -145,7 +145,7 @@ function AddProduct() {
         </p>
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+          className="bg-stone-900 hover:bg-stone-700 text-white px-4 py-2 rounded transition-colors"
         >
           Add Product
         </button>

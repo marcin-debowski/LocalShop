@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import productRoutes from "./routes/productRoutes";
+import addressRoutes from "./routes/addressRoutes";
 dotenv.config();
 
 const app = express();
@@ -33,3 +34,4 @@ connectDB()
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/address", addressRoutes);

@@ -7,6 +7,8 @@ import NoPage from "../pages/NoPage";
 import Shop from "../pages/Shop";
 import AddProduct from "../pages/AddProduct";
 import ShoppingCart from "../pages/ShoppingCart";
+import AccountChoose from "../pages/AccountChoose";
+import Summary from "../pages/Summary";
 
 function AppRouter() {
     return (
@@ -15,11 +17,13 @@ function AppRouter() {
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Home />} />
-                        <Route path="login" element={<Login />} />
+                        <Route path="login" element={<Login path="/" />} />
                         <Route path="register" element={<Register />} />
                         <Route path="shop" element={<Shop />} />
                         <Route path="add-product" element={<AddProduct />} />
                         <Route path="shopping-cart" element={<ShoppingCart />} />
+                        <Route path="choose-account" element={<AccountChoose />} />
+                        <Route path="summary" element={<Summary />} />
                         <Route path="*" element={<NoPage />} />
                     </Route>
                 </Routes>
