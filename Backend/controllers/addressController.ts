@@ -39,5 +39,16 @@ export const AddAddress = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
-
-//wczytanie ostatniego adresu
+export const GetAddress = async (req: Request, res: Response) => {
+    try {
+        const address = await Address.findOne({ user: req.user?.userId });
+        if (!address) {
+            return res.status(404).json({ message: "Add Address" });
+        }
+        res.status(200).json(address);
+    } catch (err) {
+        console.error("Error fetching address:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+    
+};

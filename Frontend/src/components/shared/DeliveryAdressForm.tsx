@@ -1,38 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "../../lib/axios";
-import type { AddAddressResponse } from "../../types/address.type";
+import type { AddAddressResponse,Address, DeliveryAddressFormProps } from "../../types/address.type";
+import { useAuthStore } from "../../zustand/authStore";
 
-function DeliveryAddressForm() {
+function DeliveryAddressForm( { messageType, setMessageType }: DeliveryAddressFormProps ) {
 
-    const [form, setForm] = useState({ country: "", city: "", street: "", zip: "" });
-    const [message, setMessage] = useState("");
-    const [messageType, setMessageType] = useState<"success" | "error" | "">("");
+  const [form, setForm] = useState({ country: "", city: "", street: "", zip: "" });
+  const [message, setMessage] = useState("");
+  const user = useAuthStore((state) => state.user);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({
-        ...form,
-        [e.target.name]: e.target.value,
-        });
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+  useEffect(() => {
+    const fetchAddress = async () => {
+      if(user){
         try {
-        const res = await axios.post<AddAddressResponse>("/address/add", form, {withCredentials: true});
-        setMessage(res.data.message);
-        setMessageType("success");
-        } catch (err: any) {
-        setMessage(err.response?.data?.message ?? "An unexpected error occurred");
-        setMessageType("error");
+          const res = await axios.get("/address/get", { withCredentials: true });
+          setForm(res.data as Address );
+          setMessageType("success");
+          setMessage("Is it still your address?");
+        } catch (err) {
+          setMessageType("");
+          console.log("Failed to fetch address");
         }
+      }
     };
-    
+    fetchAddress();
+    console.log("Fetching address on component mount");
+  }, []);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-
-
-
-
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(user){
+    try {
+      const res = await axios.post<AddAddressResponse>("/address/add", form, { withCredentials: true });
+      setMessage(res.data.message);
+      setMessageType("success");
+    } catch (err: any) {
+      setMessage(err.response?.data?.message ?? "An unexpected error occurred");
+      setMessageType("error");
+    }} else {
+      setMessageType("success");
+    }
+  };
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-1">
@@ -45,9 +60,9 @@ function DeliveryAddressForm() {
           required
           onChange={handleChange}
           readOnly={messageType === "success"}
-            disabled={messageType === "success"}
+          disabled={messageType === "success"}
           value={form.country}
-          className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 bg-white"
+          className={(messageType === "success" ? "bg-green-200" : messageType === "error" ? "bg-red-500" : "bg-white") + " border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 "}
         />
       </div>
       <div className="flex flex-col gap-1">
@@ -58,11 +73,11 @@ function DeliveryAddressForm() {
           name="city"
           placeholder="Enter your city"
           required
-            onChange={handleChange}
-            readOnly={messageType === "success"}
-            disabled={messageType === "success"}
-            value={form.city}
-          className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 bg-white"
+          onChange={handleChange}
+          readOnly={messageType === "success"}
+          disabled={messageType === "success"}
+          value={form.city}
+          className={(messageType === "success" ? "bg-green-200" : messageType === "error" ? "bg-red-500" : "bg-white") + " border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 "}
         />
       </div>
       <div className="flex flex-col gap-1">
@@ -73,11 +88,11 @@ function DeliveryAddressForm() {
           name="street"
           placeholder="Enter your street and number"
           required
-            onChange={handleChange}
-            readOnly={messageType === "success"}
-            disabled={messageType === "success"}
-            value={form.street}
-          className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 bg-white"
+          onChange={handleChange}
+          readOnly={messageType === "success"}
+          disabled={messageType === "success"}
+          value={form.street}
+          className={(messageType === "success" ? "bg-green-200" : messageType === "error" ? "bg-red-500" : "bg-white") + " border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 "}
         />
       </div>
       <div className="flex flex-col gap-1">
@@ -88,32 +103,36 @@ function DeliveryAddressForm() {
           name="zip"
           placeholder="Enter your zip code"
           required
-            onChange={handleChange}
-            readOnly={messageType === "success"}
-            disabled={messageType === "success"}
-            value={form.zip}
-          className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 bg-white"
+          onChange={handleChange}
+          readOnly={messageType === "success"}
+          disabled={messageType === "success"}
+          value={form.zip}
+          className={(messageType === "success" ? "bg-green-200" : messageType === "error" ? "bg-red-500" : "bg-white") + " border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 "}
         />
       </div>
-      <span className={messageType === "success" ? "text-green-500" : messageType === "error" ? "text-red-500" : ""}>
+      <span className={(messageType === "success" ? "text-green-500" : messageType === "error" ? "text-red-500" : "") + " min-h-6"}>
         {message && <>{message}</>}
       </span>
-      {(messageType === "success") ? (
-        <button
-          type="button"
-          className="mt-2 px-6 py-2  text-white rounded-lg font-semibold bg-stone-900 hover:bg-stone-700 transition-colors shadow"
-          onClick={e => { e.preventDefault(); setMessage(""); setMessageType(""); }}
-        >
-          Edit
-        </button>
-      ) : (
-        <button
-          type="submit"
-          className="mt-2 px-6 py-2  text-white rounded-lg font-semibold bg-stone-900 hover:bg-stone-700 transition-colors shadow"
-        >
-          Save
-        </button>
-      )}
+      
+        <>
+          {(messageType === "success") ? (
+            <button
+              type="button"
+              className="mt-2 px-6 py-2  text-white rounded-lg font-semibold bg-stone-900 hover:bg-stone-700 transition-colors shadow"
+              onClick={e => { e.preventDefault(); setMessage(""); setMessageType(""); }}
+            >
+              Edit
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="mt-2 px-6 py-2  text-white rounded-lg font-semibold bg-stone-900 hover:bg-stone-700 transition-colors shadow"
+            >
+              Save
+            </button>
+          )}
+        </>
+      
     </form>
   );
 }

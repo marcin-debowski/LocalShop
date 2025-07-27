@@ -3,6 +3,7 @@ import axios from "../lib/axios";
 import type { User } from "../types/auth.types";
 // TODO: Ensure 'cardStore' is exported from './cartStore' or import the correct member
 import { useCartStore } from "./cartStore";
+
 interface AuthState {
   user: User | null;
   fetchUser: () => Promise<void>;
@@ -40,6 +41,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       await axios.post("/auth/logout", {}, { withCredentials: true });
       set({ user: null });
       useCartStore.getState().clearCart();
+      
       
     } catch (error) {
       console.error("Error logging out:", error);

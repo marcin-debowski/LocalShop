@@ -11,7 +11,7 @@ function Shop() {
         const res = await axios.get("/products/all");
         setProducts(res.data as Product[]); // Backend zwraca tablicę produktów
       } catch (err) {
-        console.error("Błąd przy pobieraniu produktów:", err);
+        console.error("Failed to fetch products:", err);
       }
     };
 

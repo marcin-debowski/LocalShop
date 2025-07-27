@@ -1,9 +1,15 @@
 import { NavLink } from "react-router-dom";
 import { useAuthStore } from "../../zustand/authStore";
-
+import { useNavigate } from "react-router-dom";
 function Navbar() {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <nav className="col-start-1 col-end-7 flex justify-between items-center mt-2">
@@ -70,7 +76,7 @@ function Navbar() {
             <li className="col-start-9">
               <span
                 className="cursor-pointer hover:text-blue-600 transition-colors"
-                onClick={logout}
+                onClick={handleLogout}
               >
                 Logout
               </span>

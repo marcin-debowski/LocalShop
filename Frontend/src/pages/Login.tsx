@@ -18,7 +18,7 @@ function Login({ path }: { path: string }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await axios.post<LoginResponse>("/auth/login", form);
+      await axios.post<LoginResponse>("/auth/login", form);
       await fetchUser();
       navigate(path);
     } catch (err: any) {
