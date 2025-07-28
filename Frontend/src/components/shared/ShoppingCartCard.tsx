@@ -4,11 +4,13 @@ import type { ShoppingCartCardProps } from "../../types/product.types";
 
 
 function ShoppingCartCard({ item: { productId, name, price, quantity, image } }: ShoppingCartCardProps) {
-  const { removeFromCart, updateQuantity } = useCartStore();
-
+  // Pobiera funkcje z store Globalnego koszyka
+  const { removeFromCart, updateQuantity } = useCartStore(); 
+  // Obsługuje usunięcie produktu z koszyka
   const handleRemove = (productId: string) => {
     removeFromCart(productId);
   };
+  // Obsługuje zmianę ilości produktu w koszyku
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newQuantity = parseInt(e.target.value, 10);
         if (!isNaN(newQuantity)) {

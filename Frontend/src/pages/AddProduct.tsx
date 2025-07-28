@@ -1,10 +1,13 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../zustand/authStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "../lib/axios";
 import type { AddProductResponse } from "../types/product.types";
 
 function AddProduct() {
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"success" | "error" | "">("");
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     name: "",
     imageUrl: "",
@@ -13,9 +16,8 @@ function AddProduct() {
     category: "",
     stock: 0,
   });
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<"success" | "error" | "">("");
 
+  // Obsługuje zmianę danych w formularzu
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -24,7 +26,7 @@ function AddProduct() {
       [e.target.name]: e.target.value,
     });
   };
-
+  // Obsługuje wysyłanie formularza dodania produktu
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -47,11 +49,20 @@ function AddProduct() {
       setMessageType("error");
     }
   };
-
+  // Pobiera użytkownika z store
   const user = useAuthStore((state) => state.user);
+  //sparwadznie czy użytkownik jest zalogowany i ma rolę sprzedawcy
+  useEffect(() => {
+    if (user !== undefined) {
+      setLoading(false);
+    }
+  }, [user]);
+  console.log("User in AddProduct:", user);
   //sprawdzenie czy użytkownik jest zalogowany i ma rolę sprzedawcy
+  if (loading) return <div className="flex justify-center items-center h-40 text-lg">Loading...</div>;
   if (!user) return <Navigate to="/login" />;
   if (user.role !== "seller") return <Navigate to="/" />;
+
 
   return (
     <div>

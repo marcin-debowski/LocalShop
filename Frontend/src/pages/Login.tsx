@@ -7,14 +7,16 @@ import { useNavigate } from "react-router-dom";
 function Login({ path }: { path: string }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
-
+  // Pobiera funkcje z store Globalnego użytkownika
   const fetchUser = useAuthStore((state) => state.fetchUser);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  // Obsługuje zmianę danych w formularzu
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
+  // Obsługuje wysyłanie formularza logowania
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {

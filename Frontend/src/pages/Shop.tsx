@@ -4,7 +4,9 @@ import axios from "../lib/axios";
 import type { Product } from "../types/product.types";
 
 function Shop() {
+  //Tablica do przechowywania produktów
   const [products, setProducts] = useState<Product[]>([]);
+  // Pobiera wszystkie produkty z backendu przy starcie komponentu
   useEffect(() => {
     const fetchProducts = async () => {
       try {

@@ -1,20 +1,23 @@
 import { useState, useEffect } from "react";
 import axios from "../../lib/axios";
-import type { AddAddressResponse,Address, DeliveryAddressFormProps } from "../../types/address.type";
+import type { AddAddressResponse, Address, DeliveryAddressFormProps } from "../../types/address.type";
 import { useAuthStore } from "../../zustand/authStore";
 
-function DeliveryAddressForm( { messageType, setMessageType }: DeliveryAddressFormProps ) {
+interface ExtendedProps extends DeliveryAddressFormProps {
+  address: Address;
+  setAddress: (addr: Address) => void;
+}
 
-  const [form, setForm] = useState({ country: "", city: "", street: "", zip: "" });
+function DeliveryAddressForm({ messageType, setMessageType, address, setAddress }: ExtendedProps) {
   const [message, setMessage] = useState("");
   const user = useAuthStore((state) => state.user);
-
+  // Pobiera adres użytkownika, jeśli jest zalogowany przy starcie komponentu
   useEffect(() => {
     const fetchAddress = async () => {
-      if(user){
+      if (user) {
         try {
           const res = await axios.get("/address/get", { withCredentials: true });
-          setForm(res.data as Address );
+          setAddress(res.data as Address);
           setMessageType("success");
           setMessage("Is it still your address?");
         } catch (err) {
@@ -24,32 +27,32 @@ function DeliveryAddressForm( { messageType, setMessageType }: DeliveryAddressFo
       }
     };
     fetchAddress();
-    console.log("Fetching address on component mount");
   }, []);
-
+  //obsługa zmiany danych w formularzu (div)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
+    setAddress({
+      ...address,
       [e.target.name]: e.target.value,
     });
   };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // Obsługuje zapisanie adresu zalogowanego użytkownika
+  const handleSaveAddress = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if(user){
-    try {
-      const res = await axios.post<AddAddressResponse>("/address/add", form, { withCredentials: true });
-      setMessage(res.data.message);
-      setMessageType("success");
-    } catch (err: any) {
-      setMessage(err.response?.data?.message ?? "An unexpected error occurred");
-      setMessageType("error");
-    }} else {
+    if (user) {
+      try {
+        const res = await axios.post<AddAddressResponse>("/address/add", address, { withCredentials: true });
+        setMessage(res.data.message);
+        setMessageType("success");
+      } catch (err: any) {
+        setMessage(err.response?.data?.message ?? "An unexpected error occurred");
+        setMessageType("error");
+      }
+    } else {
       setMessageType("success");
     }
   };
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
         <label htmlFor="country" className="font-medium text-gray-700">Country:</label>
         <input
@@ -61,7 +64,7 @@ function DeliveryAddressForm( { messageType, setMessageType }: DeliveryAddressFo
           onChange={handleChange}
           readOnly={messageType === "success"}
           disabled={messageType === "success"}
-          value={form.country}
+          value={address.country}
           className={(messageType === "success" ? "bg-green-200" : messageType === "error" ? "bg-red-500" : "bg-white") + " border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 "}
         />
       </div>
@@ -76,7 +79,7 @@ function DeliveryAddressForm( { messageType, setMessageType }: DeliveryAddressFo
           onChange={handleChange}
           readOnly={messageType === "success"}
           disabled={messageType === "success"}
-          value={form.city}
+          value={address.city}
           className={(messageType === "success" ? "bg-green-200" : messageType === "error" ? "bg-red-500" : "bg-white") + " border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 "}
         />
       </div>
@@ -91,7 +94,7 @@ function DeliveryAddressForm( { messageType, setMessageType }: DeliveryAddressFo
           onChange={handleChange}
           readOnly={messageType === "success"}
           disabled={messageType === "success"}
-          value={form.street}
+          value={address.street}
           className={(messageType === "success" ? "bg-green-200" : messageType === "error" ? "bg-red-500" : "bg-white") + " border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 "}
         />
       </div>
@@ -106,7 +109,7 @@ function DeliveryAddressForm( { messageType, setMessageType }: DeliveryAddressFo
           onChange={handleChange}
           readOnly={messageType === "success"}
           disabled={messageType === "success"}
-          value={form.zip}
+          value={address.zip}
           className={(messageType === "success" ? "bg-green-200" : messageType === "error" ? "bg-red-500" : "bg-white") + " border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-stone-900 "}
         />
       </div>
@@ -125,15 +128,16 @@ function DeliveryAddressForm( { messageType, setMessageType }: DeliveryAddressFo
             </button>
           ) : (
             <button
-              type="submit"
+              type="button"
               className="mt-2 px-6 py-2  text-white rounded-lg font-semibold bg-stone-900 hover:bg-stone-700 transition-colors shadow"
+              onClick={handleSaveAddress}
             >
               Save
             </button>
           )}
         </>
       
-    </form>
+    </div>
   );
 }
 export default DeliveryAddressForm;

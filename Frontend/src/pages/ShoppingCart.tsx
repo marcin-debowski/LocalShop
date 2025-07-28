@@ -1,22 +1,22 @@
 import ShoppingCartCard from "../components/shared/ShoppingCartCard";
 import { useAuthStore } from "../zustand/authStore";
-
 import { useCartStore } from "../zustand/cartStore";
 import { useNavigate } from "react-router-dom";
+
 function ShoppingCart() {
 
     const cartItems = useCartStore((state) => state.cart);
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const user = useAuthStore((state) => state.user);
     const navigate = useNavigate();
-
+    // Sprawdza, czy użytkownik jest zalogowany
     const handleCheckout = () => {
         if (!user) {
             //wybór konta 
             navigate("/choose-account");
             return;
         }
-        // Podsumowanie danych
+        // przeniesienie do podsumowania zamówienia
         navigate("/summary");
     };
 

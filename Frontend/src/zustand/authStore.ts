@@ -1,11 +1,10 @@
 import { create } from "zustand";
 import axios from "../lib/axios";
 import type { User } from "../types/auth.types";
-// TODO: Ensure 'cardStore' is exported from './cartStore' or import the correct member
 import { useCartStore } from "./cartStore";
 
 interface AuthState {
-  user: User | null;
+  user: User | null | undefined; 
   fetchUser: () => Promise<void>;
   logout: () => void;
 }
@@ -17,7 +16,7 @@ interface UserResponse {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
+  user: undefined,
 
   fetchUser: async () => {
     try {

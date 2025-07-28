@@ -5,7 +5,7 @@ import { useCartStore } from "../../zustand/cartStore";
 
 function ProductCard({ name, description, price, imageUrl, _id }: { name: string; description: string; price: number; imageUrl: string; _id: string }) {
    const { addToCart } = useCartStore();
-
+  // Obsługuje dodanie produktu do koszyka
    const handleAddToCart = () => {
        const item = {
            productId: _id,

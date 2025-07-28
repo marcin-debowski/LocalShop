@@ -39,3 +39,32 @@ export const verifyToken = (
     }
   );
 };
+
+export const optionalVerifyToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return next();
+  }
+
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET as string,
+    (err: Error | null, decoded: JwtPayload | string | undefined) => {
+      if (err || !decoded || typeof decoded === "string") {
+        return next();
+      }
+
+      const payload = decoded as JwtPayload;
+      if (!payload.userId) {
+        return next();
+      }
+
+      req.user = { userId: payload.userId };
+      next();
+    }
+  );
+};

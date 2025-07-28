@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Login from "./Login";
 function AccountChoose() {
   const navigate = useNavigate();
+  // Obsługuje przejście do strony podsumowania jako gość lub zalogowanegy użytkownik
   return (
     <div className="grid grid-cols-2 gap-4 p-4">
       
