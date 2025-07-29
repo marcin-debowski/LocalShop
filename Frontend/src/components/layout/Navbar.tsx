@@ -68,10 +68,14 @@ function Navbar() {
           <>
             
             <li className="col-start-8">
-              Witaj,{" "}
-              <span className="font-semibold">
-                {user.name}, {user.role}
-              </span>
+              
+              <NavLink className={({ isActive }) =>
+                  isActive
+                    ? "text-gray-600 font-bold "
+                    : "hover:text-blue-600 transition-colors"
+                } to="/profile" >
+               Witaj,{" "} <span>{user.name}, {user.role}</span> 
+              </NavLink>
             </li>
             <li className="col-start-9">
               <span

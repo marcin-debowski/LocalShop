@@ -9,6 +9,9 @@ import AddProduct from "../pages/AddProduct";
 import ShoppingCart from "../pages/ShoppingCart";
 import AccountChoose from "../pages/AccountChoose";
 import Summary from "../pages/Summary";
+import Profile from "../pages/Profile";
+import OrdersProfile from "../pages/profilePages/OrdersProfile";
+import SettingsProfile from "../pages/profilePages/SetingsProfile";
 
 function AppRouter() {
     return (
@@ -24,6 +27,10 @@ function AppRouter() {
                         <Route path="shopping-cart" element={<ShoppingCart />} />
                         <Route path="choose-account" element={<AccountChoose />} />
                         <Route path="summary" element={<Summary />} />
+                        <Route path="profile" element={<Profile />} >
+                            <Route index element={<SettingsProfile />} />
+                            <Route path="orders" element={<OrdersProfile />} />
+                        </Route>
                         <Route path="*" element={<NoPage />} />
                     </Route>
                 </Routes>
