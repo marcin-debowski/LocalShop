@@ -27,12 +27,8 @@ function Sidebar() {
       }
     >
       Orders
-      <div className="grid ml-auto place-items-center justify-self-end">
-        <div
-          className="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900">
-          <span className="">14</span>
-        </div>
-      </div>
+      
+      
     </NavLink>
   </nav>
 </div>

@@ -1,5 +1,5 @@
 import Order from "../models/Order";
-import e, { Request, Response } from "express";    
+import { Request, Response } from "express";    
 import { User } from "../models/User";
 
 export const addOrder = async (req: Request, res: Response) => {
@@ -50,5 +50,14 @@ export const addOrder = async (req: Request, res: Response) => {
         res.status(201).json(newOrder);
     } catch (error) {
         res.status(500).json({ message: "Error creating order", error });
+    }
+};
+
+export const getOrders = async (req: Request, res: Response) => {
+    try {
+        const orders = await Order.find({ user: req.user?.userId }).populate("items.product").populate("user", "name email");
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching orders", error });
     }
 };

@@ -26,7 +26,7 @@ function Summary() {
     const total = products.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const orderData = {
       customer: user ? { name: user.name, email: user.email } : tempUser,
-      items: products.map(item => ({ productId: item.productId, name: item.name, price: item.price, quantity: item.quantity })),
+      items: products.map(item => ({ product: item.productId,  price: item.price, quantity: item.quantity })),
       total,
       address,
     };

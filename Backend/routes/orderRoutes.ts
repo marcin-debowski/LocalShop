@@ -1,6 +1,6 @@
 // routes/productRoutes.ts
 import express from "express";
-import { addOrder } from "../controllers/orderController";
+import { addOrder, getOrders } from "../controllers/orderController";
 import { optionalVerifyToken, verifyToken } from "../Middleware/auth";
 
 
@@ -8,6 +8,6 @@ import { optionalVerifyToken, verifyToken } from "../Middleware/auth";
 const router = express.Router();
 
 router.post("/add", optionalVerifyToken, addOrder);
-
+router.get("/all", verifyToken, getOrders);
 
 export default router;

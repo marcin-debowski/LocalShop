@@ -4,6 +4,7 @@ import type { RegisterResponse } from "../types/auth.types";
 
 function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"success" | "error" | "">("");
   // Obsługuje zmianę danych w formularzu
@@ -16,11 +17,18 @@ function Register() {
   // Obsługuje wysyłanie formularza rejestracji
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Sprawdzenie czy hasła się zgadzają
+    if (form.password !== confirmPassword) {
+      setMessage("Passwords do not match");
+      setMessageType("error");
+      return;
+    }
     try {
       const res = await axios.post<RegisterResponse>("/auth/register", form);
       setMessage(res.data.message);
       setMessageType("success");
       setForm({ name: "", email: "", password: "" });
+      setConfirmPassword("");
     } catch (err: any) {
       setMessage(err.response?.data?.message ?? "An unexpected error occurred");
       setMessageType("error");
@@ -85,7 +93,8 @@ function Register() {
           id="passwordAgain"
           placeholder="Confirm Password"
           className="w-3/4   border-stone-400 border-2 rounded-sm focus:border-stone-900"
-          
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <p
           className={
